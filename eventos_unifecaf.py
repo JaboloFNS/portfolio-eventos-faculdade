@@ -44,7 +44,6 @@ def acesso_aluno():
                 print(f"{Fore.GREEN}Logado com sucesso. Bem vindo, {aluno_logado["Nome"]}.")
                 print("\n")
                 menu_aluno()
-                return
             else:
                 print(f"{Fore.RED}Senha incorreta. Tentativas de login restantes: {i-1}")
         else:
@@ -57,7 +56,6 @@ def inscricao_aluno_evento():
         
 def menu_aluno():
     #Uma vez logado, o aluno tem acesso a essa tela que lista os eventos disponíveis e dá a opção de se inscrever em um deles.
-    #Após a inscrição em um dos eventos disponíveis, é questionado se deseja se inscrever em mais um.
     limpar_tela()
     print(f"{Fore.BLUE}------------------------------------------------------")
     print(f"{Fore.YELLOW}--------- PORTAL DO ALUNO - GRANDES EVENTOS ----------")
@@ -103,7 +101,6 @@ def acesso_staff():
                 print(f"{Fore.GREEN}Logado com sucesso. Bem vindo, {staff_logado["Nome"]}.")
                 print("\n")
                 menu_staff()
-                return
             else:
                 print(f"{Fore.RED}Senha incorreta. Tentativas de login restantes: {i-1}")
         else:
@@ -130,13 +127,17 @@ def alternativas_staff(opcao_staff):
             pause()
             menu_staff()
         case "4":
-            print ("Excluir Evento...")
-            #excluir_evento()
+            limpar_tela()
+            excluir_evento()
+            pause()
+            menu_staff()
         case "0":
-            print("Saindo...")
+            limpar_tela()
             menu_inicial()
         case _:
             print(f"{Fore.RED}Opção inválida. Reveja as opções disponíveis e tente novamente.")
+            pause()
+            menu_staff()
     
 def menu_staff():
     #O Menu de membros da Staff é mais complexo do que dos alunos, tendo diversas opções de gerenciamento de eventos disponíveis.
@@ -193,18 +194,20 @@ def lista_eventos (exibir_alunos_cadastrados=False):
 
 def adicionar_evento():
     #Essa função solicita novas inserções de dados para cada chave do dicionário de eventos.
-    #Após isso, combina com um número de identificador gerado consultado a quantidade de itens no dicionário de eventos e então registra o evento novo.
+    #Após isso, combina com um número de identificador gerado a partir da quantidade de itens no dicionário de eventos e então registra o evento novo.
     #Valida se o novo evento está de fato registrado no dicionário e se o tiver, visualiza a lista de eventos para consulta.
     global cont_id_evento
-    print(f"{Fore.YELLOW}---------------------------------------------")
-    print("Vamos agendar seu novo evento. Adicione as informações a seguir:")
+    print(f"{Fore.GREEN}---------------------------------------------")
+    print(f"{Fore.GREEN}--------------- CRIAR EVENTO ---------------")
+    print(f"{Fore.GREEN}--------------------------------------------- \n")
+    print(f"{Fore.YELLOW}Vamos agendar seu novo evento. Adicione as informações a seguir:")
 
-    descricao_novo = str(input("Adicione a descrição de seu evento: (Tipo do evento) - (Título do Evento) "))
-    data_inicio_novo = input("Ensira a data de início do evento: (DIA/MÊS/ANO HR:MIN) ")
-    data_fim_novo = input("Ensira a data do final do evento:(DIA/MÊS/ANO HR:MIN)")
-    professor_novo = str(input("Ensira o nome do responsável pelo evento (Professor ou Palestrante): "))
-    local_novo = str(input("Ensira o local onde será realizado o evento: "))
-    vagas_novo = int(input("Ensira a quantidade de vagas disponíveis para participar do evento: "))
+    descricao_novo = str(input("1 - Adicione a descrição de seu evento (Tipo do evento) - (Título do Evento): "))
+    data_inicio_novo = input("2 - Ensira a data de início do evento (DIA/MÊS/ANO HR:MIN): ")
+    data_fim_novo = input("3 -Ensira a data do final do evento(DIA/MÊS/ANO HR:MIN):")
+    professor_novo = str(input("4 - Ensira o nome do responsável pelo evento (Professor ou Palestrante): "))
+    local_novo = str(input("5 - Ensira o local onde será realizado o evento: "))
+    vagas_novo = int(input("6 - Ensira a quantidade de vagas disponíveis para participar do evento: "))
 
     novo_evento = {
         "Descrição": descricao_novo,
@@ -222,11 +225,18 @@ def adicionar_evento():
         print(f"{Fore.YELLOW}---------------------------------------------")
         print(f"{Fore.GREEN}Novo evento agendado com sucesso!")
     else:
+        print(f"{Fore.RED}---------------------------------------------")
         print(f"{Fore.RED} Ocorreu um erro ao agendar o evento. Tente novamente.")
 
 
 def atualizar_evento(exibir_alunos_cadastrados = False):
+    #Essa função lista as opções de eventos disponíveis para que o usuário tenha acesso aos dados necessários para iniciar as alterações.
+    #Em seguida, solicita o código identificador do evento que deseja modificar.
+    #Após isso, mostra o número de opções disponíveis para serem alteradas e solicita ao usuário qual será trabalhada.
+    #Uma vez alterada, mostra o evento na tela novamente com as novas informações.
     lista_eventos(exibir_alunos_cadastrados=True)
+    print(f"{Fore.YELLOW}---------------------------------------------")
+    print(f"{Fore.YELLOW}------------- MODIFICAR EVENTOS -------------")
     print(f"{Fore.YELLOW}---------------------------------------------")
     id_para_alterar = input(f"{Fore.MAGENTA} Digite o Código do Evento que deseja alterar: ")
     if id_para_alterar in eventos:
@@ -280,20 +290,54 @@ def atualizar_evento(exibir_alunos_cadastrados = False):
             case "0":
                 return
 
+    if id_para_alterar in eventos:
+        evento_para_alterar = eventos[id_para_alterar]
+        print(f"{Fore.YELLOW}---------------------------------------------")
+        print(f"{Fore.GREEN}Evento Atualizado:")
+        print(f"{Fore.GREEN}Código do Evento: {id_para_alterar}")
+        for chave, valor in evento_para_alterar.items():
+            if chave != "Alunos Cadastrados":
+                print(f"{Fore.GREEN}{chave}: {valor}")
+            if chave == "Alunos Cadastrados":
+                if exibir_alunos_cadastrados:
+                    print(f"{Fore.YELLOW}{chave}: ")
+                    if valor:
+                        for ra in valor:
+                            print(f"- RA: {ra} ")
+                    else:
+                        print(f"{Fore.RED}Nenhum aluno cadastrado no evento")
+                else:
+                    continue
 
+def excluir_evento():
+    lista_eventos(exibir_alunos_cadastrados = True)
+    print(f"{Fore.RED}---------------------------------------------")
+    print(f"{Fore.RED}---------- CANCELAR/EXCLUIR EVENTO ----------")
+    print(f"{Fore.RED}---------------------------------------------")
+    evento_excluir = input(f"{Fore.RED}Ensira a ID do evento que deseja excluir: ") 
+    del eventos[evento_excluir]
+    evento_check = False
 
-
-
+    for chave in eventos:
+        if chave == eventos:
+            evento_check = True
+            break
     
+    if evento_check == True:
+        print(f"{Fore.RED}Ocorreu um erro ao tentar excluir o evento. Código do Evento: {evento_excluir}") 
+    else:
+        limpar_tela()
+        print(f"{Fore.GREEN}Código do Evento: {evento_excluir}. Foi excluído/cancelado com sucesso.")
+        print(f"{Fore.GREEN}Lista de eventos atualizada:")
+        print("\n")
+        lista_eventos(exibir_alunos_cadastrados = True)
 
-    
 #------------------------------ REFERENTE AO MENU INICIAL ------------------------------------
 
 def menu_inicial():
     #O Menu inicial é a primeira tela a ser mostrada quando o usuário abrir o sistema,
     #a partir dela ele terá duas opções de acesso disponíveis.
     limpar_tela()
-    print("\n")
     print(f"{Fore.BLUE}---------------------------------------------")
     print(f"{Fore.BLUE}--------- UNIFECAF GRANDES EVENTOS ----------")
     print(f"{Fore.BLUE}---------------------------------------------\n")
