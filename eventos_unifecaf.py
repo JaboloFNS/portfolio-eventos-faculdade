@@ -18,7 +18,7 @@ aluno = {
 }
 
 def acesso_aluno():
-    #Com a opção 01 selecionada no menu inicial, essa função é chamada para realizar o login do usuário como aluno da Unifecaf.
+    #Com a opção '1' selecionada no menu inicial, essa função é chamada para realizar o login do usuário como aluno da Unifecaf.
     # O Código ira buscar dentro do sistema se as credenciais condizem com os dados de alunos que possuímos armazenados.
     print(f"{Fore.BLUE}---------------------------------------------")
     print(f"{Fore.YELLOW}--------- ACESSO ALUNO CADASTRADO -----------")
@@ -49,19 +49,74 @@ def acesso_aluno():
 
 
 def inscricao_aluno_evento():
+#Funcionalidade ainda não construída
  print()
         
 
 def menu_aluno():
     print(f"{Fore.BLUE}------------------------------------------------------")
-    print(f"{Fore.BLUE}--------- PORTAL DO ALUNO - GRANDES EVENTOS ----------")
-    print(f"{Fore.BLUE}------------------------------------------------------","\n \n \n")
+    print(f"{Fore.YELLOW}--------- PORTAL DO ALUNO - GRANDES EVENTOS ----------")
+    print(f"{Fore.BLUE}------------------------------------------------------","\n \n")
     lista_eventos()
     resposta = input("Deseja se cadastrar em um evento? [s/n]")
     resposta.lower()
     if resposta == "s" and len(resposta) == 1:
         inscricao_aluno_evento()
+    
     pause()
+
+#--------------------------------- REFERENTE AO ACESSO PERMITIDO À STAFFS DA INSTITUIÇÃO ----------------------------
+staff = {
+    #Dentro desse dicionário o número identificador equivale ao número do RA do aluno, 
+    #a partir dele tempos acesso ao restante das informações.
+    "S01":{ "Nome": "Fabrício José", "Nascimento": date(1968, 11, 9), "Cargo": "Professor", "Disciplina":"Matemática Financeira", "Senha": "123"},
+    "S02":{ "Nome": "Elizeu Pereira", "Nascimento": date(1977, 8, 25), "Cargo": "Professor", "Disciplina":"Lógica Computacional", "Senha": "456"},
+    "S03":{ "Nome": "Júlia Vasconcelos", "Nascimento": date(1999, 2, 17), "Cargo": "Professor", "Disciplina":"Agile Methods", "Senha": "789"}}
+
+def acesso_staff():
+    #Com a opção '2' selecionada no menu inicial, essa função é chamada para realizar o login do usuário como staff da Unifecaf.
+    # O Código ira buscar dentro do sistema se as credenciais condizem com os dados que possuímos armazenados.
+    print(f"{Fore.BLUE}---------------------------------------------")
+    print(f"{Fore.MAGENTA}-------- ACESSO STAFF CADASTRADO ----------")
+    print(f"{Fore.BLUE}---------------------------------------------","\n")
+
+    #Dentro desse FOR construímos a possibilidade de tentar logar-se 3 vezes, uma vez atingido o limite, retorna ao menu inicial.
+    #Também temos validações de inserção de dados, retornando mensagens de erros de acordo.
+    for i in range(3,0,-1):
+        re_staff_acesso = str(input(f"{Fore.MAGENTA}Ensira seu Registro de STAFF: "))
+        if len(re_staff_acesso) != 3:
+            print(f"{Fore.RED}Erro: O número do Registro de STAFF é composto por 3 dígitos. Tentativas de login restantes: {i-1}")
+            continue
+        re_staff_senha = str(input(f"{Fore.MAGENTA}Ensira sua senha: "))
+
+        if re_staff_acesso in staff:
+            staff_logado = staff[re_staff_acesso]
+            if re_staff_senha == staff_logado["Senha"]:
+                print("\n")
+                print(f"{Fore.GREEN}Logado com sucesso. Bem vindo, {staff_logado["Nome"]}.")
+                print("\n")
+                menu_staff()
+                return
+            else:
+                print(f"{Fore.RED}Senha incorreta. Tentativas de login restantes: {i-1}")
+        else:
+            print(f"{Fore.RED}RA não encontrado. Tentativas de login restantes: {i-1}")
+    pause()
+
+def menu_staff():
+    print(f"{Fore.BLUE}----------------------------------------------------------")
+    print(f"{Fore.MAGENTA}--------- GERENCIAMENTO STAFF - GRANDES EVENTOS ----------")
+    print(f"{Fore.BLUE}----------------------------------------------------------","\n \n \n")
+    print("Opções de Gerenciamento: \n")
+    print("1 - Visualizar Eventos")
+    print("2 - Adicionar Evento")
+    print("3 - Atualizar Evento Existente")
+    print("4 - Excluir/Cancelar Evento")
+    print("0 - Sair")
+    opcao_staff = input("Digite o código númerico da opção desejada: ")
+
+
+
 
 #--------------------------------- REFERENTE AO ARMAZENAMENTO E VISUALIZAÇÃO DE EVENTOS ------------------------------
 
@@ -101,14 +156,14 @@ def menu_inicial():
     print("Acesse nossa plataforma para estar por dentro de todas as novidades! \n"),
     print("Você é: ")
     print("1 - Aluno")
-    print("2 - Organizador de eventos")
+    print("2 - Staff")
     print("0 - Sair")
     opcao = int(input("Ensira o número correspondente ao seu perfil: "))
     if opcao == 1:
         acesso_aluno()
     elif opcao == 2:
-        print ("Olá, organizador")
-        # acesso_organizador()
+        print ("Olá, Staff")
+        acesso_staff()
     elif opcao == 0:
         print(f"{Fore.RED}----------------------------------------------")
         print(f"{Fore.RED}------ ACESSO ENCERRADO - VOLTE SEMPRE! ------")
