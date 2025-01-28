@@ -2,6 +2,11 @@
 from colorama import init, Fore, Back
 init(autoreset=True)
 
+import os
+
+def limpar_tela():
+    os.system ("cls" if os.name == "nt" else "clear")
+
 def pause():
     #Função destinada a pausar o sistema em determinados pontos.
     input ("Pressione a tecla ENTER para retornar...")
@@ -18,6 +23,7 @@ aluno = {
 def acesso_aluno():
     #Com a opção '1' selecionada no menu inicial, essa função é chamada para realizar o login do usuário como aluno da Unifecaf.
     # O Código ira buscar dentro do sistema se as credenciais inseridas condizem com os dados de alunos que possuímos armazenados.
+    limpar_tela()
     print(f"{Fore.BLUE}---------------------------------------------")
     print(f"{Fore.YELLOW}--------- ACESSO ALUNO CADASTRADO -----------")
     print(f"{Fore.BLUE}---------------------------------------------","\n")
@@ -52,6 +58,7 @@ def inscricao_aluno_evento():
 def menu_aluno():
     #Uma vez logado, o aluno tem acesso a essa tela que lista os eventos disponíveis e dá a opção de se inscrever em um deles.
     #Após a inscrição em um dos eventos disponíveis, é questionado se deseja se inscrever em mais um.
+    limpar_tela()
     print(f"{Fore.BLUE}------------------------------------------------------")
     print(f"{Fore.YELLOW}--------- PORTAL DO ALUNO - GRANDES EVENTOS ----------")
     print(f"{Fore.BLUE}------------------------------------------------------","\n \n")
@@ -74,6 +81,7 @@ staff = {
 def acesso_staff():
     #Com a opção '2' selecionada no menu inicial, essa função é chamada para realizar o login do usuário como staff da Unifecaf.
     # O Código ira buscar dentro do sistema se as credenciais condizem com os dados que possuímos armazenados.
+    limpar_tela()
     print(f"{Fore.BLUE}---------------------------------------------")
     print(f"{Fore.MAGENTA}-------- ACESSO STAFF CADASTRADO ----------")
     print(f"{Fore.BLUE}---------------------------------------------","\n")
@@ -126,6 +134,7 @@ def alternativas_staff(opcao_staff):
     
 def menu_staff():
     #O Menu de membros da Staff é mais complexo do que dos alunos, tendo diversas opções de gerenciamento de eventos disponíveis.
+    limpar_tela()
     print(f"{Fore.BLUE}----------------------------------------------------------")
     print(f"{Fore.MAGENTA}--------- GERENCIAMENTO STAFF - GRANDES EVENTOS ----------")
     print(f"{Fore.BLUE}----------------------------------------------------------","\n \n \n")
@@ -200,40 +209,30 @@ def adicionar_eventos():
 
     eventos [str(cont_id_evento)] = novo_evento
     if eventos [str(cont_id_evento)] == novo_evento:
+        lista_eventos(exibir_alunos_cadastrados=True)
         print(f"{Fore.YELLOW}---------------------------------------------")
         print(f"{Fore.GREEN}Novo evento agendado com sucesso!")
-        for id_evento, dados_evento  in eventos.items():
-            print(f"Código do Evento: {id_evento}")
-            for chave, valor in dados_evento.items():
-                if chave == cont_id_evento:
-                    print(f"{chave}: {valor}")
-                    if "Alunos Cadastrados" in dados_evento:
-                        if not dados_evento["Alunos Cadastrados"]:
-                            print("Ainda não há cadastros.")
-
-
-
-
+    else:
+        print(f"{Fore.RED} Ocorreu um erro ao agendar o evento. Tente novamente.")
+    pause()
+    menu_staff()
     
-
-
-
-
 #------------------------------ REFERENTE AO MENU INICIAL ------------------------------------
 
 def menu_inicial():
     #O Menu inicial é a primeira tela a ser mostrada quando o usuário abrir o sistema,
     #a partir dela ele terá duas opções de acesso disponíveis.
+    limpar_tela()
     print("\n")
     print(f"{Fore.BLUE}---------------------------------------------")
     print(f"{Fore.BLUE}--------- UNIFECAF GRANDES EVENTOS ----------")
     print(f"{Fore.BLUE}---------------------------------------------\n")
     print("Acesse nossa plataforma para estar por dentro de todas as novidades! \n"),
     print("Você é: ")
-    print("1 - Aluno")
-    print("2 - Staff")
+    print("1 - Acesso: Aluno")
+    print("2 - Acesso: Staff")
     print("0 - Sair")
-    opcao = int(input("Insira o número correspondente ao seu perfil: "))
+    opcao = int(input("Insira o número correspondente à ação desejada: "))
     if opcao == 1:
         acesso_aluno()
     elif opcao == 2:
