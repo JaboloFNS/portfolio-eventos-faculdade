@@ -71,10 +71,12 @@ def inscricao_aluno_evento():
                 print(f"{Fore.GREEN}Inscrição realizada com sucesso! \n")
         else:
             print(f"{Fore.RED} Código de Evento não encontrado. Tente novamente. \n")
+            pause()
             menu_aluno()
 
     else:
         print(f"{Fore.RED}RA não encontrado. Por segurança, encerraremos seu acesso. \n")
+        pause()
         menu_inicial()
     
         
@@ -278,8 +280,9 @@ def atualizar_evento(exibir_alunos_cadastrados = False):
     id_para_alterar = input(f"{Fore.MAGENTA} Digite o Código do Evento que deseja alterar: ")
     if id_para_alterar in eventos:
         evento_para_alterar = eventos[id_para_alterar]
-        print(f"{Fore.YELLOW}---------------------------------------------")
-        print(f"{Fore.YELLOW}Evento selecionado:")
+        print(f"{Fore.BLUE}---------------------------------------------")
+        print(f"{Fore.BLUE}Evento selecionado:")
+        print(f"{Fore.BLUE}---------------------------------------------")
         print(f"Código do Evento: {id_para_alterar}")
         for chave, valor in evento_para_alterar.items():
             if chave != "Alunos Cadastrados":
@@ -382,10 +385,12 @@ def excluir_evento():
                     print(f"{Fore.RED}Ocorreu um erro ao tentar excluir o evento. Código do Evento: {evento_excluir}") 
                 else:
                     limpar_tela()
-                    print(f"{Fore.GREEN}Código do Evento: {evento_excluir}. Foi excluído/cancelado com sucesso.")
                     print(f"{Fore.GREEN}Lista de eventos atualizada:")
                     print("\n")
                     lista_eventos(exibir_alunos_cadastrados = True)
+                    print(f"{Fore.GREEN}Código do Evento: {evento_excluir}. Foi excluído/cancelado com sucesso.")
+                    pause()
+                    menu_staff()
             else:
                 print(f"{Fore.RED}Senha incorreta. Tentativas restantes: {i-1}")
         else:
