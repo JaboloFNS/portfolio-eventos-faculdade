@@ -15,7 +15,7 @@ def pause():
 aluno = {
     #Dentro desse dicionário o número identificador equivale ao número do RA do aluno, 
     #a partir dele temos acesso ao restante das informações.
-    "001":{ "Nome": "Ednaldo Pereira", "Nascimento": "15/01/11967", "Curso": "ADS", "Senha": "0123"},
+    "001":{ "Nome": "Ednaldo Pereira", "Nascimento": "15/01/1967", "Curso": "ADS", "Senha": "0123"},
     "002":{ "Nome": "Fernanda Rodrigues", "Nascimento": "28/11/1992", "Curso": "GTI", "Senha": "456"},
     "003":{ "Nome": "Rodrigo Amadeu", "Nascimento": "25/04/2001", "Curso": "ADM", "Senha": "789"}
 }
@@ -51,8 +51,32 @@ def acesso_aluno():
     pause()
 
 def inscricao_aluno_evento():
-#Funcionalidade ainda não construída
-    print()
+    print(f"{Fore.BLUE}------------------------------------------------------")
+    ra_aluno_confirma = str(input("1 - Confirme a numeração do seu RA: "))
+    if ra_aluno_confirma in aluno:
+        dados_aluno = aluno[ra_aluno_confirma]
+        print(f"RA: {ra_aluno_confirma}")
+        for chave, valor  in dados_aluno.items():
+            if chave == "Senha":
+                continue
+            print (f"{chave}: {valor}")
+
+        id_evento_escolhido = str(input("Ensira o Código do Evento que deseja se inscrever: "))
+        if id_evento_escolhido in eventos:
+            evento_confirmado = eventos[id_evento_escolhido]
+            vagas = evento_confirmado["Vagas Disponíveis"]
+            if vagas > 0:
+                evento_confirmado["Alunos Cadastrados"].append(ra_aluno_confirma)
+                evento_confirmado["Vagas Disponíveis"] = vagas - 1
+                print(f"{Fore.GREEN}Inscrição realizada com sucesso! \n")
+        else:
+            print(f"{Fore.RED} Código de Evento não encontrado. Tente novamente. \n")
+            menu_aluno()
+
+    else:
+        print(f"{Fore.RED}RA não encontrado. Por segurança, encerraremos seu acesso. \n")
+        menu_inicial()
+    
         
 def menu_aluno():
     #Uma vez logado, o aluno tem acesso a essa tela que lista os eventos disponíveis e dá a opção de se inscrever em um deles.
@@ -66,7 +90,11 @@ def menu_aluno():
     resposta = resposta.lower()
     if resposta == "s" and len(resposta) == 1:
         inscricao_aluno_evento()
+    else:
+        pause()
+        menu_inicial()
     pause()
+    menu_aluno()
 
 #--------------------------------- REFERENTE AO ACESSO PERMITIDO À STAFFS DA INSTITUIÇÃO ----------------------------
 staff = {
@@ -256,7 +284,7 @@ def atualizar_evento(exibir_alunos_cadastrados = False):
                     else:
                         print(f"{Fore.RED}Nenhum aluno cadastrado no evento")
                 else:
-                    continue
+                    continue        
         print(f"{Fore.YELLOW}---------------------------------------------")
         print("O que deseja alterar?")
         print("1 - Descrição")
