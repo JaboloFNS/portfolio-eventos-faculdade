@@ -189,15 +189,17 @@ def menu_staff():
 
 #--------------------------------- REFERENTE AO ARMAZENAMENTO E GERENCIAMENTO DE EVENTOS ------------------------------
 
-eventos = { "1":{"Descrição": "Workshop - Lógica Computacional com Python", "Data-inicio": "25/02/2025 às 08:00",
-    "Data-fim": "25/02/2025 às 12h", "Professor":"Irineu da Silva Sauro","Local":"Campus Centro - Lab 1", "Vagas Disponíveis": 18,
-    "Alunos Cadastrados": ["003","002"]},
-    "2":{"Descrição": "Workshop - Banco de Dados Relacionais com MySQL Server", "Data-inicio": "24/03/2025 às 08:00",
-    "Data-fim": "24/03/2025 às 12:00", "Professor":"Joel Santana","Local":"Campus Centro - Lab 2", "Vagas Disponíveis": 49,
-    "Alunos Cadastrados": ["003"]},
-    "3":{"Descrição": "Palestra - Desenvolvimento Pessoal e Empregabilidade", "Data-inicio": "27/04/2025 às 08:00",
-    "Data-fim": "27/04/2025 às 10:00", "Professor":"Maria Gadu","Local":"Campus Taboão - Lab 11", "Vagas Disponíveis": 50,
-    "Alunos Cadastrados": []},
+eventos = { "1":{"Título": "Workshop - Lógica Computacional com Python", "Descrição":"Nesse workshop vamos trabalhar os conceitos básicos do funcionamento da Lógica Computacional, \n com estruturas condicionais, estruturas de repetição e estrutura de dados. Tudo isso com a linguagem mais utilizada no mercado: Python.",
+    "Data-inicio": "25/02/2025 às 08:00","Data-fim": "25/02/2025 às 12h", "Professor":"Irineu da Silva Sauro",
+    "Local":"Campus Centro - Lab 1", "Vagas Disponíveis": 18,"Alunos Cadastrados": ["003","002"]},
+
+    "2":{"Título": "Workshop - Banco de Dados Relacionais com MySQL Server","Descrição":"Quer aprender a construir e gerenciar um banco de dados profissional para o seu negócio? \n Nesse workshop você aprenderá tudo que precisa para começar seu primeiro projeto de Banco de Dados usando MySQL Server.",
+    "Data-inicio": "24/03/2025 às 08:00","Data-fim": "24/03/2025 às 12:00", "Professor":"Joel Santana",
+    "Local":"Campus Centro - Lab 2", "Vagas Disponíveis": 49, "Alunos Cadastrados": ["003"]},
+
+    "3":{"Título": "Palestra - Desenvolvimento Pessoal e Empregabilidade", "Descrição":"Um bate-papo descontraído abrangendo diversas visões de como um profissional \n deve se comportar e se aprimorar para atingir seus objetivos no mercado de trabalho.",
+    "Data-inicio": "27/04/2025 às 08:00","Data-fim": "27/04/2025 às 10:00", "Professor":"Maria Gadu",
+    "Local":"Campus Taboão - Lab 11", "Vagas Disponíveis": 50, "Alunos Cadastrados": []},
 }
 
 cont_id_evento = len(eventos) + 1
@@ -223,7 +225,7 @@ def lista_eventos (exibir_alunos_cadastrados=False):
                 else:
                     continue
             else:
-                print (f"{chave}: {valor}")
+                print (f"- {chave}: {valor}")
 
 def adicionar_evento():
     #Essa função solicita novas inserções de dados para cada chave do dicionário de eventos.
@@ -235,14 +237,16 @@ def adicionar_evento():
     print(f"{Fore.GREEN}--------------------------------------------- \n")
     print(f"{Fore.YELLOW}Vamos agendar seu novo evento. Adicione as informações a seguir:")
 
-    descricao_novo = str(input("1 - Adicione a descrição de seu evento (Tipo do evento) - (Título do Evento): "))
-    data_inicio_novo = input("2 - Ensira a data de início do evento (DIA/MÊS/ANO HR:MIN): ")
-    data_fim_novo = input("3 -Ensira a data do final do evento(DIA/MÊS/ANO HR:MIN):")
-    professor_novo = str(input("4 - Ensira o nome do responsável pelo evento (Professor ou Palestrante): "))
-    local_novo = str(input("5 - Ensira o local onde será realizado o evento: "))
-    vagas_novo = int(input("6 - Ensira a quantidade de vagas disponíveis para participar do evento: "))
+    titulo_novo = str(input("1 - Adicione o Título de seu evento (Tipo do evento) - (Título do Evento): "))
+    descricao_novo = str(input("2 - Adicione uma descrição sobre o evento: "))
+    data_inicio_novo = input("3 - Ensira a data de início do evento (DIA/MÊS/ANO HR:MIN): ")
+    data_fim_novo = input("4 -Ensira a data do final do evento(DIA/MÊS/ANO HR:MIN):")
+    professor_novo = str(input("5 - Ensira o nome do responsável pelo evento (Professor ou Palestrante): "))
+    local_novo = str(input("6 - Ensira o local onde será realizado o evento: "))
+    vagas_novo = int(input("7 - Ensira a quantidade de vagas disponíveis para participar do evento: "))
 
     novo_evento = {
+        "Título": titulo_novo,
         "Descrição": descricao_novo,
         "Data-inicio": data_inicio_novo,
         "Data-fim": data_fim_novo,
@@ -292,32 +296,36 @@ def atualizar_evento(exibir_alunos_cadastrados = False):
                     continue        
         print(f"{Fore.YELLOW}---------------------------------------------")
         print("O que deseja alterar?")
-        print("1 - Descrição")
-        print("2 - Data-inicio")
-        print("3 - Data-fim")
-        print("4 - Professor (Responsável)")
-        print("5 - Local")
-        print("6 - Vagas Disponíveis")
+        print("1 - Título")
+        print("2 - Descrição")
+        print("3 - Data-inicio")
+        print("4 - Data-fim")
+        print("5 - Professor (Responsável)")
+        print("6 - Local")
+        print("7 - Vagas Disponíveis")
         print("0 - Sair")
         opcao_alterar = input("Insira a opção desejada: ")
 
         match opcao_alterar:
             case "1":
-                valor_novo = str(input("Ensira a nova descrição do evento: (Tipo do evento) - (Título do Evento)"))
-                eventos[id_para_alterar]["Descrição"] = valor_novo
+                valor_novo = str(input("Ensira o novo título do evento: (Tipo do evento) - (Título do Evento)"))
+                eventos[id_para_alterar]["Título"] = valor_novo
             case "2":
+                valor_novo = str(input("Ensira a nova descrição do evento:"))
+                eventos[id_para_alterar]["Descrição"] = valor_novo
+            case "3":
                 valor_novo = str(input("Ensira a nova data de início do evento: (DIA/MÊS/ANO HR:MIN) "))
                 eventos[id_para_alterar]["Data-inicio"] = valor_novo
-            case "3":
+            case "4":
                 valor_novo = str(input("Ensira a nova data de encerramento do evento: (DIA/MÊS/ANO HR:MIN) "))
                 eventos[id_para_alterar]["Data-fim"] = valor_novo
-            case "4":
+            case "5":
                 valor_novo = str(input("Ensira o nome e sobrenome do novo responsável pelo evento: "))
                 eventos[id_para_alterar]["Professor"] = valor_novo
-            case "5":
+            case "6":
                 valor_novo = str(input("Ensira o novo local do evento: "))
                 eventos[id_para_alterar]["Local"] = valor_novo
-            case "6":
+            case "7":
                 valor_novo = int(input("Ensira a nova quantidade de vagas disponíveis: "))
                 eventos[id_para_alterar]["Vagas Disponíveis"] = valor_novo
             case "0":
