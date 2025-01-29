@@ -31,7 +31,7 @@ def acesso_aluno():
     for i in range(3,0,-1):
         #Dentro desse FOR construímos a possibilidade de tentar logar-se 3 vezes, uma vez atingido o limite, retorna ao menu inicial.
         #Também temos validações de inserção de dados, retornando mensagens de erros de acordo.
-        ra_aluno_acesso = str(input(f"{Fore.YELLOW}Ensira seu RA: "))
+        ra_aluno_acesso = str(input(f"{Fore.YELLOW}Ensira seu RA (3 dígitos): "))
         if len(ra_aluno_acesso) != 3  or not ra_aluno_acesso.isdigit():
             print(f"{Fore.RED}Erro: O número do RA é composto por 3 dígitos. Tentativas de login restantes: {i-1}")
             continue
@@ -86,13 +86,16 @@ def menu_aluno():
     print(f"{Fore.BLUE}------------------------------------------------------","\n")
     lista_eventos()
     print(f"{Fore.YELLOW}---------------------------------------------")
-    resposta = input("Deseja se cadastrar em um evento? [s/n]: ")
+    resposta = input(f"{Fore.BLUE}Deseja se cadastrar em um evento? [s/n]: ")
     resposta = resposta.lower()
     if resposta == "s" and len(resposta) == 1:
         inscricao_aluno_evento()
-    else:
+    elif resposta == "n" and len(resposta) == 1:
         pause()
         menu_inicial()
+    else:
+        print("Operação inválida! Revise as opções disponíveis e tente novamente.")
+        
     pause()
     menu_aluno()
 
@@ -115,7 +118,7 @@ def acesso_staff():
     #Dentro desse FOR construímos a possibilidade de tentar logar-se 3 vezes, uma vez atingido o limite, retorna ao menu inicial.
     #Também temos validações de inserção de dados, retornando mensagens de erros de acordo.
     for i in range(3,0,-1):
-        re_staff_acesso = str(input(f"{Fore.MAGENTA}Insira seu Registro de STAFF: "))
+        re_staff_acesso = str(input(f"{Fore.MAGENTA}Insira seu Registro de STAFF (Ex: S00): "))
         re_staff_acesso = re_staff_acesso.upper()
         if len(re_staff_acesso) != 3 and not re_staff_acesso.startswith("S"):
             print(f"{Fore.RED}Erro: O código do Registro de Staff exige 3 caracteres. Tentativas de login restantes: {i-1}")
@@ -163,6 +166,8 @@ def alternativas_staff(opcao_staff):
             limpar_tela()
             menu_inicial()
         case _:
+            limpar_tela()
+            print(f"{Fore.RED}---------------------------------------------------------------")
             print(f"{Fore.RED}Opção inválida. Reveja as opções disponíveis e tente novamente.")
             pause()
             menu_staff()
@@ -342,23 +347,49 @@ def excluir_evento():
     print(f"{Fore.RED}---------------------------------------------")
     print(f"{Fore.RED}---------- CANCELAR/EXCLUIR EVENTO ----------")
     print(f"{Fore.RED}---------------------------------------------")
-    evento_excluir = input(f"{Fore.RED}Ensira a ID do evento que deseja excluir: ") 
-    del eventos[evento_excluir]
-    evento_check = False
+    evento_excluir = input(f"{Fore.YELLOW}Ensira a ID do evento que deseja excluir: ")
+    for i in range(3,0,-1):
+        re_staff_acesso = str(input(f"{Fore.MAGENTA}Por segurança, confirme seu Registro de Staff:"))
+        re_staff_acesso = re_staff_acesso.upper()
+        if len(re_staff_acesso) != 3 and not re_staff_acesso.startswith("S"):
+            print(f"{Fore.RED}Erro: O código do Registro de Staff exige 3 caracteres. Tentativas de confirmação restantes:{i-1}")
+            continue
+        re_staff_senha = str(input(f"{Fore.MAGENTA}Confirme sua senha: "))
 
-    for chave in eventos:
-        if chave == eventos:
-            evento_check = True
-            break
+        if re_staff_acesso in staff:
+            staff_logado = staff[re_staff_acesso]
+            if re_staff_senha == staff_logado["Senha"]:
+                print("\n")
+                print(f"{Fore.GREEN}{staff_logado["Nome"]}, suas crendenciais foram confirmadas com sucesso.")
+                del eventos[evento_excluir]
+                print("\n")
+                evento_check = False
+
+                for chave in eventos:
+                    if chave == eventos:
+                        evento_check = True
+                    break
     
-    if evento_check == True:
-        print(f"{Fore.RED}Ocorreu um erro ao tentar excluir o evento. Código do Evento: {evento_excluir}") 
-    else:
-        limpar_tela()
-        print(f"{Fore.GREEN}Código do Evento: {evento_excluir}. Foi excluído/cancelado com sucesso.")
-        print(f"{Fore.GREEN}Lista de eventos atualizada:")
-        print("\n")
-        lista_eventos(exibir_alunos_cadastrados = True)
+                if evento_check == True:
+                    print(f"{Fore.RED}Ocorreu um erro ao tentar excluir o evento. Código do Evento: {evento_excluir}") 
+                else:
+                    limpar_tela()
+                    print(f"{Fore.GREEN}Código do Evento: {evento_excluir}. Foi excluído/cancelado com sucesso.")
+                    print(f"{Fore.GREEN}Lista de eventos atualizada:")
+                    print("\n")
+                    lista_eventos(exibir_alunos_cadastrados = True)
+            else:
+                print(f"{Fore.RED}Senha incorreta. Tentativas restantes: {i-1}")
+        else:
+            print(f"{Fore.RED}RA não encontrado. Tentativas restantes: {i-1}")
+        if i == 1:
+            print(f"{Fore.RED}-----------------------------------------------------------------")
+            print(f"{Fore.RED}Muitos erros consecutivos. Por segurança encerraremos seu acesso.")
+            pause()
+            menu_inicial()
+    
+
+    
 
 #------------------------------ REFERENTE AO MENU INICIAL ------------------------------------
 
