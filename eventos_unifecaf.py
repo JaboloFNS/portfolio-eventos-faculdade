@@ -354,11 +354,12 @@ def atualizar_evento(exibir_alunos_cadastrados = False):
                     continue
 
 def excluir_evento():
+    #Essa função lista os eventos disponíveis para consulta, solicita o Código de Evento e as credenciais o usuário para confirmar a exclusão do evento selecionado.
     lista_eventos(exibir_alunos_cadastrados = True)
     print(f"{Fore.RED}---------------------------------------------")
     print(f"{Fore.RED}---------- CANCELAR/EXCLUIR EVENTO ----------")
     print(f"{Fore.RED}---------------------------------------------")
-    evento_excluir = input(f"{Fore.YELLOW}Ensira a ID do evento que deseja excluir: ")
+    evento_excluir = input(f"{Fore.YELLOW}Ensira o Código de Evento que deseja excluir: ")
     for i in range(3,0,-1):
         re_staff_acesso = str(input(f"{Fore.MAGENTA}Por segurança, confirme seu Registro de Staff:"))
         re_staff_acesso = re_staff_acesso.upper()
@@ -435,3 +436,12 @@ def menu_inicial():
     menu_inicial()
 
 menu_inicial()
+
+
+
+
+#Observação: Tenho em mente que o tipo de dado escolhido para armazenar as datas não foi o melhor, servem apenas para uma visualização simplória.
+#O melhor seria trabalhar com objetos datetime importando seus respectivos módulos. É um aprimoramento no sistema que pretendo realizar no futuro,
+#mas o meu tempo disponíveis para realização deste trabalho, junto com o deadline cada vez mais próxima me impossibilitou.
+#Sem mais,
+#Fabiano Novais
